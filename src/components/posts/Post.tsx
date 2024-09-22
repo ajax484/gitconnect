@@ -2,7 +2,6 @@
 import { formatRelativeDate } from "@/lib/utils";
 import { MessageSquare } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 import UserAvatar from "../UserAvatar";
 import UserTooltip from "../UserTooltip";
 import { PostData } from "@/typings/posts";
@@ -17,8 +16,6 @@ interface PostProps {
 
 export default function Post({ post }: PostProps) {
   const { user } = useUser();
-
-  const [showComments, setShowComments] = useState(false);
 
   if (!user) return null;
 

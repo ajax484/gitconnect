@@ -61,7 +61,7 @@ export async function signUp(
     const { email, firstName, lastName, password } =
       signUpSchema.parse(credentials);
 
-    const user = await account.create(
+    await account.create(
       ID.unique(),
       email,
       password,

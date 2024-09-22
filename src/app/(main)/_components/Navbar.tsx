@@ -1,4 +1,3 @@
-import SearchField from "@/components/SearchField";
 import UserButton from "@/components/UserButton";
 import Link from "next/link";
 

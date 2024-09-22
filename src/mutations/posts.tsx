@@ -15,11 +15,9 @@ import {
 } from "@/actions/posts";
 import { CommentsPage, PostsPage } from "@/typings/posts";
 import { getLoggedInUser } from "@/lib/server/appWrite";
-import { useUser } from "@/providers/UserProvider";
 
 export function useDeletePostMutation() {
   const { toast } = useToast();
-  const { user } = useUser();
 
   const queryClient = useQueryClient();
 

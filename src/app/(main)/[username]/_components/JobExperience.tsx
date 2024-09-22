@@ -8,8 +8,8 @@ const JobExperience = ({ user }: { user: UserData }) => {
     <div className="flex-1 w-full space-y-5 rounded-2xl bg-card p-5 shadow-sm">
       <h3 className="text-xl font-bold">Job Experience</h3>
       {user.experiences && user.experiences.length > 0 ? (
-        user.experiences.map((experience) => (
-          <div className="space-y-2">
+        user.experiences.map((experience, index) => (
+          <div className="space-y-2" key={index}>
             <h4 className="text-lg font-bold capitalize">
               {experience.jobTitle}, {experience.company}
             </h4>

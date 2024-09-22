@@ -8,8 +8,8 @@ const Education = ({ user }: { user: UserData }) => {
     <div className="flex-1 w-full space-y-5 rounded-2xl bg-card p-5 shadow-sm">
       <h3 className="text-xl font-bold">Education</h3>
       {user.education && user.education.length > 0 ? (
-        user.education.map((education) => (
-          <div className="space-y-2">
+        user.education.map((education, index) => (
+          <div className="space-y-2" key={index}>
             <h4 className="text-lg font-bold capitalize">
               {education.degree}, {education.institution}
             </h4>

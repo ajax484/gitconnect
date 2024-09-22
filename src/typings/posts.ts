@@ -15,7 +15,7 @@ export interface PostsPage {
 }
 
 export interface LikeInfo {
-  likes: number;
+  likes: string[];
   isLikedByUser: boolean;
 }
 

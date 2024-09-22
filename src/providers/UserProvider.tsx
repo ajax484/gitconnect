@@ -1,5 +1,4 @@
 "use client";
-import { DEFAULT_USER } from "@/constants/default";
 import { UserData } from "@/typings/user";
 import React, { createContext, useContext } from "react";
 
