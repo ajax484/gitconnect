@@ -218,6 +218,7 @@ function AvatarInput({ src, onImageCropped }: AvatarInputProps) {
   return (
     <>
       <input
+      title="avatar"
         type="file"
         accept="image/*"
         onChange={(e) => onImageSelected(e.target.files?.[0])}
@@ -225,6 +226,7 @@ function AvatarInput({ src, onImageCropped }: AvatarInputProps) {
         className="sr-only hidden"
       />
       <button
+      title="upload avatar"
         type="button"
         onClick={() => fileInputRef.current?.click()}
         className="group relative block"

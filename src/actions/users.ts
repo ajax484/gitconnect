@@ -16,6 +16,22 @@ import {
 } from "@/typings/user";
 import { Query } from "node-appwrite";
 import { FollowerData } from "@/typings/followers";
+import { Models } from "node-appwrite";
+
+interface rawUserData extends Models.Document {
+  username: string;
+  displayName: string;
+  email?: string;
+  avatarUrl?: string;
+  bio?: string;
+  firstName: string;
+  lastName: string;
+  following: string[];
+  followers: string[];
+  github: string;
+  education: string;
+  experiences: string;
+}
 
 export async function fetchUser(userId: string): Promise<UserData> {
   try {
@@ -25,7 +41,7 @@ export async function fetchUser(userId: string): Promise<UserData> {
 
     const { database } = await createDatabaseClient();
 
-    const user = await database.getDocument<UserData>(
+    const user = await database.getDocument<rawUserData>(
       "database",
       "users",
       userId
@@ -68,7 +84,7 @@ export async function fetchUserByValue(
     const { database } = await createDatabaseClient();
 
     const user = (
-      await database.listDocuments<UserData>("database", "users", [
+      await database.listDocuments<rawUserData>("database", "users", [
         Query.equal(key, value),
       ])
     ).documents[0];
@@ -218,7 +234,7 @@ export async function fetchUsers(cursor?: string | null): Promise<UsersPage> {
   if (!user) throw new Error("Unauthorized");
 
   // Fetch posts with optional pagination cursor
-  const posts = await database.listDocuments<UserData>("database", "users", [
+  const posts = await database.listDocuments<rawUserData>("database", "users", [
     Query.notEqual("$id", user.$id),
     Query.orderDesc("$createdAt"),
     Query.limit(pageSize + 1),
@@ -246,7 +262,7 @@ export async function fetchUsers(cursor?: string | null): Promise<UsersPage> {
       return {
         ...thisUser,
         education: JSON.parse(thisUser.education),
-      experiences: JSON.parse(thisUser.experiences),
+        experiences: JSON.parse(thisUser.experiences),
         followers: followersCount.documents.map(({ followerId }) => followerId),
         following: followingCount.documents.map(
           ({ followingId }) => followingId

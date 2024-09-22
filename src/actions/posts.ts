@@ -42,8 +42,10 @@ export async function deletePost(id: string) {
   return deletedPost;
 }
 
-export async function submitPost(input: { content: string; userId: string }) {
-  console.log("here");
+export async function submitPost(input: {
+  content: string;
+  userId: string;
+}): Promise<PostData> {
   const { database } = await createDatabaseClient();
 
   const user = await getLoggedInUser();
@@ -53,36 +55,30 @@ export async function submitPost(input: { content: string; userId: string }) {
 
   const { content } = createPostSchema.parse(input);
 
-  try {
-    // Create a new post
-    const newPost = await database.createDocument(
-      "database",
-      "posts",
-      ID.unique(),
-      {
-        content,
-        userId: user.$id,
-      }
-    );
+  const newPost = await database.createDocument<PostData>(
+    "database",
+    "posts",
+    ID.unique(),
+    {
+      content,
+      userId: user.$id,
+    }
+  );
 
-    const thisUser = await fetchUser(newPost.userId);
-    const commentsCount = (
-      await database.listDocuments<CommentData>("database", "comments", [
-        Query.equal("postId", newPost.$id),
-      ])
-    ).total;
+  const thisUser = await fetchUser(newPost.userId);
+  const commentsCount = (
+    await database.listDocuments<CommentData>("database", "comments", [
+      Query.equal("postId", newPost.$id),
+    ])
+  ).total;
 
-    const postWithDetails = {
-      ...newPost,
-      user: thisUser,
-      comments: commentsCount,
-    };
+  const postWithDetails = {
+    ...newPost,
+    user: thisUser,
+    comments: commentsCount,
+  };
 
-    return postWithDetails;
-  } catch (error) {
-    console.error(error);
-    throw new Error("Internal server error");
-  }
+  return postWithDetails;
 }
 
 export async function fetchPosts(cursor?: string | null): Promise<PostsPage> {

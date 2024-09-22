@@ -1,4 +1,9 @@
-import { createUserProfile, updateEducationProfile, updateExperienceProfile, updateUserProfile } from "@/actions/users";
+import {
+  createUserProfile,
+  updateEducationProfile,
+  updateExperienceProfile,
+  updateUserProfile,
+} from "@/actions/users";
 import { useToast } from "@/hooks/use-toast";
 import { PostsPage } from "@/typings/posts";
 import {
@@ -21,8 +26,6 @@ export function useCreateProfileMutation() {
   const router = useRouter();
 
   const queryClient = useQueryClient();
-
-  //   const { startUpload: startAvatarUpload } = useUploadThing("avatar");
 
   const mutation = useMutation({
     mutationFn: async (values: createUserProfileValues) => {
@@ -52,9 +55,9 @@ export function useCreateProfileMutation() {
                   return {
                     ...post,
                     user: {
-                      ...post.user, // Spread original user data
-                      displayName: updatedUser.displayName, // Updated user info
-                      avatarUrl: updatedUser.avatarUrl, // Plain string or null
+                      ...post.user,
+                      displayName: updatedUser.displayName,
+                      avatarUrl: updatedUser.avatarUrl || "",
                     },
                   };
                 }
@@ -121,9 +124,9 @@ export function useUpdateProfileMutation() {
                   return {
                     ...post,
                     user: {
-                      ...post.user, // Spread original user data
-                      displayName: updatedUser.displayName, // Updated user info
-                      avatarUrl: updatedUser.avatarUrl, // Plain string or null
+                      ...post.user,
+                      displayName: updatedUser.displayName,
+                      avatarUrl: updatedUser.avatarUrl || "",
                     },
                   };
                 }
@@ -163,9 +166,6 @@ export function useUpdateEducationMutation() {
 
   const mutation = useMutation({
     mutationFn: async (values: EducationValues) => {
-      console.log(values, "values");
-
-      // Ensure you're passing values and expecting a serializable object
       return await updateEducationProfile(values);
     },
     onSuccess: async (updatedUser) => {
@@ -189,9 +189,9 @@ export function useUpdateEducationMutation() {
                   return {
                     ...post,
                     user: {
-                      ...post.user, // Spread original user data
-                      displayName: updatedUser.displayName, // Updated user info
-                      avatarUrl: updatedUser.avatarUrl, // Plain string or null
+                      ...post.user,
+                      displayName: updatedUser.displayName,
+                      avatarUrl: updatedUser.avatarUrl || "",
                     },
                   };
                 }
@@ -227,8 +227,6 @@ export function useUpdateExperienceMutation() {
 
   const queryClient = useQueryClient();
 
-  //   const { startUpload: startAvatarUpload } = useUploadThing("avatar");
-
   const mutation = useMutation({
     mutationFn: async (values: jobExperienceValues) => {
       console.log(values, "values");
@@ -257,9 +255,9 @@ export function useUpdateExperienceMutation() {
                   return {
                     ...post,
                     user: {
-                      ...post.user, // Spread original user data
-                      displayName: updatedUser.displayName, // Updated user info
-                      avatarUrl: updatedUser.avatarUrl, // Plain string or null
+                      ...post.user,
+                      displayName: updatedUser.displayName,
+                      avatarUrl: updatedUser.avatarUrl || "",
                     },
                   };
                 }
