@@ -41,7 +41,7 @@ const UsersList = () => {
           An error occurred while loading users.
         </p>
       )}
-      <div className="divide-y">
+      <div className="space-y-5">
         {searchedData.map((user) => (
           <User key={user.$id} user={user} />
         ))}

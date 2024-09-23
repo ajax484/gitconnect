@@ -48,7 +48,7 @@ export default function CreateProfileForm() {
         })
       : undefined;
 
-    let avatar = null;
+    let avatar: string | null = null;
 
     startTransition(async () => {
       try {
@@ -63,20 +63,21 @@ export default function CreateProfileForm() {
 
           const result = await response.json();
           if (response.ok) {
-            console.log(result);
+            console.log(result, "result");
             avatar = result.url;
           } else {
             toast({
               variant: "destructive",
-              description: "Failed to update avatar. Please try again.",
+              description: "Failed to create avatar. Please try again.",
             });
-            throw new Error("Failed to update avatar. Please try again.");
+            throw new Error("Failed to create avatar. Please try again.");
           }
         }
 
         await mutation.mutateAsync(
           {
             ...values,
+            avatar,
           },
           {
             onSuccess: () => {
@@ -85,7 +86,7 @@ export default function CreateProfileForm() {
           }
         );
       } catch (error) {
-        console.error("Error updating profile:", error);
+        console.error("Error creating profile:", error);
       }
     });
   }

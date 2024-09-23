@@ -182,6 +182,7 @@ export async function updateExperienceProfile(values: jobExperienceValues) {
 
 export async function createUserProfile(values: createUserProfileValues) {
   const validatedValues = createUserProfileSchema.parse(values);
+  console.log(validatedValues, "values");
   const { username } = validatedValues;
   const loggedInUser = await getLoggedInUser();
 
@@ -210,12 +211,7 @@ export async function createUserProfile(values: createUserProfileValues) {
     }
   );
 
-  return {
-    $id: updatedUser.$id,
-    displayName: updatedUser.displayName,
-    bio: updatedUser.bio,
-    avatar: updatedUser.avatar || null,
-  };
+  return updatedUser;
 }
 
 export async function fetchUsers(cursor?: string | null): Promise<UsersPage> {
