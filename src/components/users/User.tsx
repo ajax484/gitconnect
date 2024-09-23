@@ -32,7 +32,7 @@ const User = ({ user }: { user: UserData }) => {
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-4">
             <Link href={`/${user.username}`}>
-              <UserAvatar size={48} avatarUrl={user.avatarUrl} />
+              <UserAvatar size={48} avatar={user.avatar} />
             </Link>
             <div>
               <Link href={`/${user.username}`}>

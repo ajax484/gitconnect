@@ -43,7 +43,7 @@ export default function PostEditor() {
     <div className="flex flex-col gap-5 rounded-2xl bg-card p-5 shadow-sm">
       <div className="flex gap-5">
         <UserAvatar
-          avatarUrl={user?.avatarUrl || ""}
+          avatar={user?.avatar || ""}
           className="hidden sm:inline"
         />
         <div className="w-full">

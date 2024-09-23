@@ -5,6 +5,7 @@ import {
   updateUserProfile,
 } from "@/actions/users";
 import { useToast } from "@/hooks/use-toast";
+import { useUser } from "@/providers/UserProvider";
 import { PostsPage } from "@/typings/posts";
 import {
   createUserProfileValues,
@@ -31,7 +32,6 @@ export function useCreateProfileMutation() {
     mutationFn: async (values: createUserProfileValues) => {
       console.log(values, "values");
 
-      // Ensure you're passing values and expecting a serializable object
       return await createUserProfile(values);
     },
     onSuccess: async (updatedUser) => {
@@ -57,7 +57,7 @@ export function useCreateProfileMutation() {
                     user: {
                       ...post.user,
                       displayName: updatedUser.displayName,
-                      avatarUrl: updatedUser.avatarUrl || "",
+                      avatar: updatedUser.avatar || "",
                     },
                   };
                 }
@@ -89,18 +89,16 @@ export function useCreateProfileMutation() {
 
 export function useUpdateProfileMutation() {
   const { toast } = useToast();
+  const { setUser } = useUser();
 
   const router = useRouter();
 
   const queryClient = useQueryClient();
 
-  //   const { startUpload: startAvatarUpload } = useUploadThing("avatar");
-
   const mutation = useMutation({
     mutationFn: async (values: UpdateUserProfileValues) => {
       console.log(values, "values");
 
-      // Ensure you're passing values and expecting a serializable object
       return await updateUserProfile(values);
     },
     onSuccess: async (updatedUser) => {
@@ -126,7 +124,7 @@ export function useUpdateProfileMutation() {
                     user: {
                       ...post.user,
                       displayName: updatedUser.displayName,
-                      avatarUrl: updatedUser.avatarUrl || "",
+                      avatar: updatedUser.avatar || "",
                     },
                   };
                 }
@@ -137,6 +135,7 @@ export function useUpdateProfileMutation() {
         }
       );
 
+      setUser(updatedUser);
       router.refresh();
 
       toast({
@@ -191,7 +190,7 @@ export function useUpdateEducationMutation() {
                     user: {
                       ...post.user,
                       displayName: updatedUser.displayName,
-                      avatarUrl: updatedUser.avatarUrl || "",
+                      avatar: updatedUser.avatar || "",
                     },
                   };
                 }
@@ -257,7 +256,7 @@ export function useUpdateExperienceMutation() {
                     user: {
                       ...post.user,
                       displayName: updatedUser.displayName,
-                      avatarUrl: updatedUser.avatarUrl || "",
+                      avatar: updatedUser.avatar || "",
                     },
                   };
                 }

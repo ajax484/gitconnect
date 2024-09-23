@@ -26,7 +26,7 @@ import { UpdateUserProfileValues, UserData } from "@/typings/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Camera } from "lucide-react";
 import Image, { StaticImageData } from "next/image";
-import { useRef, useState } from "react";
+import { useRef, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import Resizer from "react-image-file-resizer";
 
@@ -52,18 +52,20 @@ export default function EditProfileDialog({
     },
   });
 
+  const [pending, startTransition] = useTransition();
+
   console.log(form.formState.errors, "errors");
 
   const mutation = useUpdateProfileMutation();
   const [croppedAvatar, setCroppedAvatar] = useState<Blob | null>(null);
 
   async function onSubmit(values: UpdateUserProfileValues) {
-    // Create a new avatar file if cropped
-    // const newAvatarFile = croppedAvatar
-    //   ? new File([croppedAvatar], `avatar_${user.id}.webp`, {
-    //       type: "image/webp",
-    //     })
-    //   : undefined;
+    console.log(croppedAvatar, "cropped avatar");
+    const newAvatarFile = croppedAvatar
+      ? new File([croppedAvatar], `avatar_${user.$id}.webp`, {
+          type: "image/webp",
+        })
+      : undefined;
 
     if (!user?.$id) {
       return toast({
@@ -72,21 +74,50 @@ export default function EditProfileDialog({
       });
     }
 
-    try {
-      await mutation.mutateAsync(
-        {
-          ...values,
-        },
-        {
-          onSuccess: () => {
-            setCroppedAvatar(null);
-            onOpenChange(false);
-          },
+    console.log(newAvatarFile, "avatar file");
+
+    let avatar = user.avatar || null;
+
+    startTransition(async () => {
+      try {
+        if (newAvatarFile) {
+          const formData = new FormData();
+          formData.append("file", newAvatarFile);
+
+          const response = await fetch("/api/upload-avatar", {
+            method: "POST",
+            body: formData,
+          });
+
+          const result = await response.json();
+          if (response.ok) {
+            console.log(result, "result");
+            avatar = result.url;
+          } else {
+            toast({
+              variant: "destructive",
+              description: "Failed to update avatar. Please try again.",
+            });
+            throw new Error("Failed to update avatar. Please try again.");
+          }
         }
-      );
-    } catch (error) {
-      console.error("Error updating profile:", error);
-    }
+
+        await mutation.mutateAsync(
+          {
+            ...values,
+            avatar,
+          },
+          {
+            onSuccess: () => {
+              setCroppedAvatar(null);
+              onOpenChange(false);
+            },
+          }
+        );
+      } catch (error) {
+        console.error("Error updating profile:", error);
+      }
+    });
   }
 
   return (
@@ -101,7 +132,7 @@ export default function EditProfileDialog({
             src={
               croppedAvatar
                 ? URL.createObjectURL(croppedAvatar)
-                : user.avatarUrl || avatarPlaceholder
+                : user.avatar || avatarPlaceholder
             }
             onImageCropped={setCroppedAvatar}
           />
@@ -180,7 +211,10 @@ export default function EditProfileDialog({
               )}
             />
             <DialogFooter>
-              <LoadingButton type="submit" loading={mutation.isPending}>
+              <LoadingButton
+                type="submit"
+                loading={pending || mutation.isPending}
+              >
                 Save
               </LoadingButton>
             </DialogFooter>
@@ -218,7 +252,7 @@ function AvatarInput({ src, onImageCropped }: AvatarInputProps) {
   return (
     <>
       <input
-      title="avatar"
+        title="avatar"
         type="file"
         accept="image/*"
         onChange={(e) => onImageSelected(e.target.files?.[0])}
@@ -226,7 +260,7 @@ function AvatarInput({ src, onImageCropped }: AvatarInputProps) {
         className="sr-only hidden"
       />
       <button
-      title="upload avatar"
+        title="upload avatar"
         type="button"
         onClick={() => fileInputRef.current?.click()}
         className="group relative block"

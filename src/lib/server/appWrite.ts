@@ -1,7 +1,7 @@
 // src/lib/server/appwrite.ts
 "use server";
 
-import { Client, Account, Databases } from "node-appwrite";
+import { Client, Account, Databases, Storage } from "node-appwrite";
 import { cookies } from "next/headers";
 import { Models } from "node-appwrite";
 
@@ -70,6 +70,19 @@ export async function createDatabaseClient() {
   return {
     get database() {
       return new Databases(client);
+    },
+  };
+}
+
+export async function createStorageClient() {
+  const client = new Client()
+    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT as string)
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT as string)
+    .setKey(process.env.NEXT_PUBLIC_APPWRITE_KEY as string);
+
+  return {
+    get storage() {
+      return new Storage(client);
     },
   };
 }

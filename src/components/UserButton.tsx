@@ -37,7 +37,7 @@ export default function UserButton({ className }: UserButtonProps) {
         <button
           className={cn("flex rounded-full items-center gap-2", className)}
         >
-          <UserAvatar avatarUrl={user?.avatarUrl || ""} size={40} />
+          <UserAvatar avatar={user?.avatar || ""} size={40} />
           <h2 className="text-md font-medium">{user?.username}</h2>
         </button>
       </DropdownMenuTrigger>

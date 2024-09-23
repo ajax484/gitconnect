@@ -21,7 +21,7 @@ export default function Comment({ comment }: CommentProps) {
       <span className="hidden sm:inline">
         <UserTooltip user={comment.user}>
           <Link href={`/users/${comment.user.username}`}>
-            <UserAvatar avatarUrl={comment.user.avatarUrl} size={40} />
+            <UserAvatar avatar={comment.user.avatar} size={40} />
           </Link>
         </UserTooltip>
       </span>

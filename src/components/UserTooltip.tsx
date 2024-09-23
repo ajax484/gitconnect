@@ -49,7 +49,7 @@ export default function UserTooltip({ children, user }: UserTooltipProps) {
           <div className="flex w-[250px] flex-col gap-3 break-words px-1 py-2.5 md:min-w-52">
             <div className="flex items-center justify-between gap-2">
               <Link href={`/${user.username}`}>
-                <UserAvatar size={48} avatarUrl={user.avatarUrl} />
+                <UserAvatar size={48} avatar={user.avatar} />
               </Link>
               {loggedInUser.$id !== user.$id && (
                 <FollowButton userId={user.$id} initialState={followerState} />

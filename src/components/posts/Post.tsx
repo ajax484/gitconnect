@@ -19,8 +19,6 @@ export default function Post({ post }: PostProps) {
 
   if (!user) return null;
 
-  console.log(post, "post");
-
   return (
     <article className="rounded-2xl bg-card p-5 shadow-sm">
       <Link
@@ -31,7 +29,7 @@ export default function Post({ post }: PostProps) {
           <div className="flex flex-wrap gap-3">
             <UserTooltip user={post.user}>
               <Link href={`/${post.user.username}`}>
-                <UserAvatar avatarUrl={post.user.avatarUrl} />
+                <UserAvatar avatar={post.user.avatar} />
               </Link>
             </UserTooltip>
             <div>

@@ -22,7 +22,7 @@ interface rawUserData extends Models.Document {
   username: string;
   displayName: string;
   email?: string;
-  avatarUrl?: string;
+  avatar?: string;
   bio?: string;
   firstName: string;
   lastName: string;
@@ -122,7 +122,6 @@ export async function updateUserProfile(values: UpdateUserProfileValues) {
 
   const { database } = await createDatabaseClient();
 
-  // Perform the update and return only the updated user data
   const updatedUser = await database.updateDocument<UserData>(
     "database",
     "users",
@@ -130,12 +129,7 @@ export async function updateUserProfile(values: UpdateUserProfileValues) {
     validatedValues
   );
 
-  return {
-    $id: updatedUser.$id,
-    displayName: updatedUser.displayName,
-    bio: updatedUser.bio,
-    avatarUrl: updatedUser.avatarUrl || null,
-  };
+  return updatedUser;
 }
 
 export async function updateEducationProfile(values: EducationValues) {
@@ -159,7 +153,7 @@ export async function updateEducationProfile(values: EducationValues) {
     $id: updatedUser.$id,
     displayName: updatedUser.displayName,
     bio: updatedUser.bio,
-    avatarUrl: updatedUser.avatarUrl || null, // Ensure avatarUrl is a simple string or null
+    avatar: updatedUser.avatar || null, // Ensure avatar is a simple string or null
   };
 }
 
@@ -182,7 +176,7 @@ export async function updateExperienceProfile(values: jobExperienceValues) {
     $id: updatedUser.$id,
     displayName: updatedUser.displayName,
     bio: updatedUser.bio,
-    avatarUrl: updatedUser.avatarUrl || null,
+    avatar: updatedUser.avatar || null,
   };
 }
 
@@ -220,7 +214,7 @@ export async function createUserProfile(values: createUserProfileValues) {
     $id: updatedUser.$id,
     displayName: updatedUser.displayName,
     bio: updatedUser.bio,
-    avatarUrl: updatedUser.avatarUrl || null,
+    avatar: updatedUser.avatar || null,
   };
 }
 

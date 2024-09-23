@@ -16,6 +16,7 @@ export default function FollowButton({
   userId,
   initialState,
 }: FollowButtonProps) {
+  console.log(initialState, "follow");
   const { toast } = useToast();
 
   const queryClient = useQueryClient();

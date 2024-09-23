@@ -7,7 +7,8 @@ export const updateUserProfileSchema = z.object({
   bio: z.string().max(1000, "Must be at most 1000 characters"),
   firstName: requiredString,
   lastName: requiredString,
-  github: z.string().url().trim().min(1, "Required"),
+  github: z.string().url().trim().min(1, "Required").optional(),
+  avatar: z.string().optional().nullable(),
 });
 
 export const createUserProfileSchema = z.object({
@@ -15,6 +16,7 @@ export const createUserProfileSchema = z.object({
   displayName: requiredString,
   bio: z.string().max(1000, "Must be at most 1000 characters"),
   github: z.string().url().trim().min(1, "Required"),
+  avatar: z.string().optional().nullable(),
 });
 
 export const jobExperienceSchema = z.object({

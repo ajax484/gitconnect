@@ -17,7 +17,7 @@ export interface UserData
   username: string;
   displayName: string;
   email?: string;
-  avatarUrl?: string;
+  avatar?: string;
   bio?: string;
   firstName: string;
   lastName: string;
