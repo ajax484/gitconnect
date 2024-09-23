@@ -2,13 +2,6 @@ import { createStorageClient } from "@/lib/server/appWrite";
 import { NextRequest, NextResponse } from "next/server";
 import { ID } from "node-appwrite";
 
-// Disable body parsing to handle file uploads
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
