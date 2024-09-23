@@ -50,9 +50,9 @@ export default function CreateProfileForm() {
 
     let avatar = null;
 
-    try {
-      if (newAvatarFile) {
-        startTransition(async () => {
+    startTransition(async () => {
+      try {
+        if (newAvatarFile) {
           const formData = new FormData();
           formData.append("file", newAvatarFile);
 
@@ -72,22 +72,22 @@ export default function CreateProfileForm() {
             });
             throw new Error("Failed to update avatar. Please try again.");
           }
-        });
-      }
-
-      await mutation.mutateAsync(
-        {
-          ...values,
-        },
-        {
-          onSuccess: () => {
-            setCroppedAvatar(null);
-          },
         }
-      );
-    } catch (error) {
-      console.error("Error updating profile:", error);
-    }
+
+        await mutation.mutateAsync(
+          {
+            ...values,
+          },
+          {
+            onSuccess: () => {
+              setCroppedAvatar(null);
+            },
+          }
+        );
+      } catch (error) {
+        console.error("Error updating profile:", error);
+      }
+    });
   }
 
   return (
